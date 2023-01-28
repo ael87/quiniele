@@ -1,4 +1,13 @@
-// Modularización
+/* Este código es un juego de lotería llamado Quiniele v0.1. 
+El usuario cuenta con una cantidad de créditos para apostar. 
+El usuario ingresa los números y posiciones (1,5,10 o 20) a los que desea apostar,
+así como la cantidad de créditos que desea apostar. Después de confirmar 
+la apuesta, el usuario puede agregar una nueva apuesta o realizar 
+el sorteo. Una vez que el usuario confirma el sorteo, se generan 
+números aleatorios entre 0 y 999, para luego comparar si el usuario 
+ganó alguna vez con las apuestas hechas. Si el usuario ganó alguna 
+vez, el dinero ganado se suma a los créditos disponibles, mostrando 
+el resultado final. */
 
 // Función para mostrar mensaje de bienvenida
 function mostrarMensajeBienvenida(dinero){
@@ -68,81 +77,28 @@ function mostrarMensajeBienvenida(dinero){
         let ganaste = 0;
         let dineroGanado = 0;
         let apuesta = apuestas[i];
+        let coeficienteMultiplicador;
   
-        if (apuesta.pos === "20" && apuesta.num.length === 3) {
-            for (let j = 0; j < 20; j++) {
+        if (apuesta.num.length === 3) {
+            coeficienteMultiplicador = apuesta.pos === "20" ? 35 : apuesta.pos === "10" ? 70 : apuesta.pos === "5" ? 140 : 280;
+            for (let j = 0; j < apuesta.pos; j++) {
                 if (resultados[j] === apuesta.num) {
                     ganaste++;
                 }
             }
-            dineroGanado += (ganaste*apuesta.dinero*35);
+            dineroGanado += (ganaste * apuesta.dinero * coeficienteMultiplicador);
             ganaste = 0;
 
-        } else if (apuesta.pos === "10" && apuesta.num.length === 3) {
-            for (let j = 0; j < 10; j++) {
-                if (resultados[j] === apuesta.num) {
+        } else if (apuesta.num.length === 2) {
+            coeficienteMultiplicador = apuesta.pos === "20" ? 3.5 : apuesta.pos === "10" ? 7 : apuesta.pos === "5" ? 14 : 70;
+            for (let j = 0; j < apuesta.pos; j++) {
+                if (resultados[j].slice(1) === apuesta.num) {
                     ganaste++;
                 }
             }
-            dineroGanado += (ganaste*apuesta.dinero*70)
-            ganaste = 0;
-
-        } else if (apuesta.pos === "5" && apuesta.num.length === 3) {
-            for (let j = 0; j < 5; j++) {
-                if (resultados[j] === apuesta.num) {
-                    ganaste++;
-                }
-            }
-            dineroGanado += (ganaste*apuesta.dinero*140)
-            ganaste = 0;
-
-        } else if (apuesta.pos === "1" && apuesta.num.length === 3) {
-            for (let j = 0; j < 1; j++) {
-                if (resultados[j] === apuesta.num) {
-                    ganaste++;
-                }
-            }
-            dineroGanado += (ganaste*apuesta.dinero*280)
+            dineroGanado += (ganaste*apuesta.dinero*coeficienteMultiplicador)
             ganaste = 0;
         }
-
-        if (apuesta.pos === "20" && apuesta.num.length === 2) {
-          for (let j = 0; j < 20; j++) {
-              if (resultados[j].slice(1) === apuesta.num) {
-                  ganaste++;
-              }
-          }
-          dineroGanado += (ganaste*apuesta.dinero*3.5)
-          ganaste = 0;
-
-      } else if (apuesta.pos === "10" && apuesta.num.length === 2) {
-          for (let j = 0; j < 10; j++) {
-              if (resultados[j].slice(1) === apuesta.num) {
-                  ganaste++;
-              }
-          }
-          dineroGanado += (ganaste*apuesta.dinero*7)
-          ganaste = 0;
-
-      } else if (apuesta.pos === "5" && apuesta.num.length === 2) {
-          for (let j = 0; j < 5; j++) {
-              if (resultados[j].slice(1) === apuesta.num) {
-                  ganaste++;
-              }
-          }
-          dineroGanado += (ganaste*apuesta.dinero*14)
-          ganaste = 0;
-
-      } else if (apuesta.pos === "1" && apuesta.num.length === 2) {
-          for (let j = 0; j < 1; j++) {
-              if (resultados[j].slice(1) === apuesta.num) {
-                  ganaste++;
-              }
-          }
-          dineroGanado += (ganaste*apuesta.dinero*70)
-          ganaste = 0;
-
-      }
   
         if (dineroGanado > 0) {
             console.log(`Ganaste ${dineroGanado} créditos con la apuesta ${apuesta.num} en la posición ${apuesta.pos}.`);
